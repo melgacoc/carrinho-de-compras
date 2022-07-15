@@ -38,4 +38,15 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
   return li;
 };
 
+// funções para limpar o carrinho
+const clearButton = () => {
+  const button = document.getElementsByClassName('empty-cart');
+  button.addEventListener('click', clearCart);
+}
+
+const clearCart = () => {
+  const myCart = document.getElementsByClassName('cart__items');
+  myCart.value = '';
+};
+
 window.onload = () => { };
