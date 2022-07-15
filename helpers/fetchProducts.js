@@ -1,6 +1,6 @@
 const fetchProducts = async (product) => {
   // seu código aqui
-  const base = 'https://api.mercadolibre.com/sites/MLB/search?q='
+  const base = 'https://api.mercadolibre.com/sites/MLB/search?q=';
   const url = `${base}${product}`;
 
   try {
@@ -11,8 +11,6 @@ const fetchProducts = async (product) => {
     return error;
   }
 };
-
-fetchProducts(computador);
 
 if (typeof module !== 'undefined') {
   module.exports = {

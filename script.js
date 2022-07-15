@@ -39,14 +39,15 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 };
 
 // funções para limpar o carrinho
-const clearButton = () => {
-  const button = document.getElementsByClassName('empty-cart');
-  button.addEventListener('click', clearCart);
-}
 
 const clearCart = () => {
   const myCart = document.getElementsByClassName('cart__items');
   myCart.value = '';
+};
+
+const clearButton = () => {
+  const button = document.getElementsByClassName('empty-cart');
+  button.addEventListener('click', clearCart);
 };
 
 window.onload = () => { };
