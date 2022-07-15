@@ -30,7 +30,7 @@ const productList = async () => {
   console.log(fetchFunction);
   const buildList = document.querySelector('.items');
   fetchFunction.forEach(({ id, title, thumbnail }) => {
-    const objectProduct = { sku: id, name: title, image: thumbnail} ;
+    const objectProduct = { sku: id, name: title, image: thumbnail };
     buildList.appendChild(createProductItemElement(objectProduct));
   });
 };
