@@ -26,17 +26,21 @@ const createProductItemElement = ({ sku, name, image }) => {
 
 // adiciona produtos ao carrinho
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
+const queryCartItems = document.querySelector('.cart__items');
+
+const cartItemClickListener = async (event) => {
+  // coloque seu código aqui
+  event.target.remove();
+};
 
 // cria lista
 const createCartItemElement = ({ sku, name, salePrice }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  // li.addEventListener('click', buttonAddCartItem);
+  li.addEventListener('click', cartItemClickListener);
   return li;
 };
-
-const queryCartItems = document.querySelector('.cart__items');
 
 // pega o id do item
 const buttonAddCartItem = async (event) => {
@@ -66,11 +70,6 @@ const productList = async () => {
     buildList.appendChild(createProductItemElement(objectProduct));
   });
   addCartItem();
-};
-
-const cartItemClickListener = async (event) => {
-  // coloque seu código aqui
-  const clearCart = queryCartItems;
 };
 
 // funções para limpar o carrinho
