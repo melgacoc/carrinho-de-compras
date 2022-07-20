@@ -24,34 +24,55 @@ const createProductItemElement = ({ sku, name, image }) => {
   return section;
 };
 
+// adiciona produtos ao carrinho
+const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
+
+const addCartItem = () => {
+  const buttonAdd = document.querySelectorAll('.item__add');
+  buttonAdd.forEach((button) => {
+   button.addEventListener('click', buttonAddCartItem);
+  });
+};
+// pega o id do item
+const buttonAddCartItem = async (event) => {
+  const productId = getSkuFromProductItem(event.target.parentNode);
+  const fetchProductId = await fetchItem(productId);
+  console.log(fetchProductId);
+  const buildCartList = document.querySelector('.cart__items');
+  // não se usa forEach, pois a função me retorna somente 1 item
+  const { id, title, price } = fetchProductId;
+  const objectCartProduct = { sku: id, name: title, salePrice: price };
+   buildCartList.appendChild(createCartItemElement(objectCartProduct));
+};
+
+// cria lista
+const createCartItemElement = ({ sku, name, salePrice }) => {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.addEventListener('click', buttonAddCartItem);
+  return li;
+};
+
 // criando lista de produtos
 const productList = async () => {
   const fetchFunction = (await fetchProducts('computador')).results;
-  console.log(fetchFunction);
   const buildList = document.querySelector('.items');
   fetchFunction.forEach(({ id, title, thumbnail }) => {
     const objectProduct = { sku: id, name: title, image: thumbnail };
     buildList.appendChild(createProductItemElement(objectProduct));
   });
+  addCartItem();
 };
 
-const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
-
-const cartItemClickListener = (event) => {
+const cartItemClickListener = async (event) => {
   // coloque seu código aqui
-};
-
-const createCartItemElement = ({ sku, name, salePrice }) => {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
+  const clearCart = document.querySelector('.cart__items');
 };
 
 // funções para limpar o carrinho
 const clearCart = () => {
-  const myCart = document.querySelector('.cart__items');
+  const myCart = document.querySelectorAll('.cart__items');
   myCart.innerHTML = '';
 };
 
