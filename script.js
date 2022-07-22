@@ -27,14 +27,15 @@ const createProductItemElement = ({ sku, name, image }) => {
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 const queryCartItems = document.querySelector('.cart__items');
 const localStorageRec = JSON.parse(localStorage.getItem('cartItems'));
+const cartTotalPrice = document.querySelector('.total-price');
 
 const cartItemClickListener = async (event) => {
   // coloque seu código aqui
-  const cartTotalPrice = document.querySelector('.total-price');
-  const cartPriceText = cartTotalPrice.innerText;
+  const cartTotalPrice1 = cartTotalPrice;
+  const cartPriceText = cartTotalPrice1.innerText;
   const productId = event.target.innerText;
   const [, segundaPosicaoDeletedItem] = productId.split('$');
-  cartTotalPrice.innerText = Number(cartPriceText) - Number(segundaPosicaoDeletedItem);
+  cartTotalPrice1.innerText = Number(cartPriceText) - Number(segundaPosicaoDeletedItem);
   console.log(segundaPosicaoDeletedItem);
   // const deletedPrice = productId.split('$')
   // subtrai(segundaPosicaoDeletedItem);
@@ -63,10 +64,10 @@ const buttonAddCartItem = async (event) => {
   const objectCartProduct = { sku: id, name: title, salePrice: price };
    buildingCartList.appendChild(createCartItemElement(objectCartProduct));
   // somar valor a currCartValue
-  const cartTotalPrice = document.querySelector('.total-price');
-  const cartPriceText = cartTotalPrice.innerText;
+  const cartTotalPrice2 = cartTotalPrice;
+  const cartPriceText = cartTotalPrice2.innerText;
   // const [, segundaPosicao] = cartPriceText.split('$');
-  cartTotalPrice.innerHTML = Number(price) + Number(cartPriceText);
+  cartTotalPrice2.innerHTML = Number(price) + Number(cartPriceText);
   // const arr = Object.values(objectCartProduct);
   // const elemento = arr[2];
 };
@@ -93,7 +94,7 @@ const productList = async () => {
 const clearCart = () => {
   const myCart = queryCartItems;
   myCart.innerHTML = '';
-  const valorText = document.querySelector('.total-price');
+  const valorText = cartTotalPrice;
   valorText.innerHTML = 0;
 };
 
