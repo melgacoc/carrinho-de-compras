@@ -15,7 +15,6 @@ const createCustomElement = (element, className, innerText) => {
 const createProductItemElement = ({ sku, name, image }) => {
   const section = document.createElement('section');
   section.className = 'item';
-
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
@@ -27,10 +26,28 @@ const createProductItemElement = ({ sku, name, image }) => {
 // adiciona produtos ao carrinho
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 const queryCartItems = document.querySelector('.cart__items');
+const localStorageRec = JSON.parse(localStorage.getItem('cartItems'));
+
+const subtrai = (segundaPosicaoDeletedItem) =>{
+  const cartTotalPrice = document.querySelector('.total-price');
+  const cartPriceText = cartTotalPrice.innerText;
+  const [, segundaPosicao] = cartPriceText.split('$');
+  cartTotalPrice.innerHTML = Number(cartPriceText) - Number(segundaPosicao);
+};
 
 const cartItemClickListener = async (event) => {
   // coloque seu código aqui
+  const cartTotalPrice = document.querySelector('.total-price');
+  const cartPriceText = cartTotalPrice.innerText;
+  const productId = event.target.innerText;
+  const [, segundaPosicaoDeletedItem] = productId.split('$');
+  cartTotalPrice.innerText = Number(cartPriceText) - Number(segundaPosicaoDeletedItem);
+  console.log(segundaPosicaoDeletedItem);
+  // const deletedPrice = productId.split('$')
+  // subtrai(segundaPosicaoDeletedItem);
   event.target.remove();
+  // subtrair valor de currCartValue
+  // const arr = Object.values(productId);
 };
 
 // cria lista
@@ -42,7 +59,7 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
   return li;
 };
 
-// pega o id do item
+// pega o id do item 
 const buttonAddCartItem = async (event) => {
   const productId = getSkuFromProductItem(event.target.parentNode);
   const fetchProductId = await fetchItem(productId);
@@ -52,6 +69,13 @@ const buttonAddCartItem = async (event) => {
   const { id, title, price } = fetchProductId;
   const objectCartProduct = { sku: id, name: title, salePrice: price };
    buildingCartList.appendChild(createCartItemElement(objectCartProduct));
+  // somar valor a currCartValue
+  const cartTotalPrice = document.querySelector('.total-price');
+  const cartPriceText = cartTotalPrice.innerText;
+  //const [, segundaPosicao] = cartPriceText.split('$');
+  cartTotalPrice.innerHTML = Number(price) + Number(cartPriceText);
+  //const arr = Object.values(objectCartProduct);
+  // const elemento = arr[2];
 };
 
 const addCartItem = () => {
@@ -76,6 +100,8 @@ const productList = async () => {
 const clearCart = () => {
   const myCart = queryCartItems;
   myCart.innerHTML = '';
+  const valorText = document.querySelector('.total-price');
+  valorText.innerHTML = 0;
 };
 
 const clearButton = (event) => {
@@ -83,7 +109,21 @@ const clearButton = (event) => {
   button.addEventListener('click', clearCart);
 };
 
+const captureSalePrice = () => {
+  const cartPrices = document.querySelectorAll('.cart__items').innerHTML;
+  cartPrices.forEach(({ price }) => {
+    const objectPrice = { salePrice: price };
+    console.log(objectPrice.price);
+  })
+};
+
+const savedItems = () => {
+  const itemsInStorage = JSON.parse(createCartItemElement);
+  cartItem.innerHTML = itemsInStorage;
+};
+
 window.onload = () => {
   productList();
   clearButton();
- };
+  //cartValue();
+}
